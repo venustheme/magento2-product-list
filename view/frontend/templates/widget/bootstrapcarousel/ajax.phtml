@@ -1,0 +1,41 @@
+<?php
+use Magento\Framework\App\Action\Action;
+$number_item_perpage = $this->getConfig('number_item_perpage',6);
+$bnav = $this->getConfig('bnav');
+$bdots = $this->getConfig('bdots');
+$total = $collection->count();
+?>
+
+<?php
+$data = $this->getData();
+$data['collection'] = $collection->getItems();
+echo $this->getProductHtml($data);
+?>
+
+<?php if( $bnav && $total>$number_item_perpage ){ ?>
+<div class="nav-controls">
+	<a class="left carousel-control" href="#<?php echo $tab['id'] ?>" role="button" data-slide="prev">
+		<i class="fa fa-angle-left"></i>
+		<span class="sr-only"><?php echo __('Previous'); ?></span>
+	</a>
+	<a class="right carousel-control" href="#<?php echo $tab['id'] ?>" role="button" data-slide="next">
+		<i class="fa fa-angle-right"></i>
+		<span class="sr-only"><?php echo __('Next'); ?></span>
+	</a>
+</div>
+<?php } ?>
+
+<?php
+if($bdots && $total>0 && $total>$number_item_perpage){ ?>
+<?php
+$totalPage = $total/$number_item_perpage;
+if($total%$number_item_perpage!=0){
+	$totalPage = round($total/$number_item_perpage)+1;
+}
+?>
+<ol class="carousel-indicators">
+	<?php for ($z=0; $z < $totalPage; $z++) { ?>
+	<li data-target="#<?php echo $tab['id'] ?>" data-slide-to="<?php echo $z ?>" <?php if($z==0){ ?>class="active" <?php } ?>></li>
+	<?php } ?>
+</ol>
+<?php } ?>

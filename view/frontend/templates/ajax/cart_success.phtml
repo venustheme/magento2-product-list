@@ -1,0 +1,20 @@
+<div class="popup_avaiable">
+	<?php
+	$imgUrl = $product->getProductUrl();
+	?>
+	<a href="<?php echo $imgUrl; ?>">
+		<?php echo $product->getName(); ?>
+	</a>
+	<?php echo __('was added to your shopping cart.'); ?>
+	<br/>
+	<div class="action_button">
+		<ul>
+			<li>
+				<button onclick="jQuery.fancybox.close();" class="button btn-continue" title="<?php echo __("Continue Shopping");?>"><?php echo __("Continue Shopping");?></button>
+			</li>
+			<li>
+				<a href="<?php echo $this->helper('Magento\Checkout\Helper\Cart')->getCartUrl(); ?>" class="button btn-viewcart" title="<?php echo __("Checkout");?>"><span><?php echo __("View cart &amp; checkout");?></span></a>
+			</li>
+		</ul>
+	</div>
+</div>

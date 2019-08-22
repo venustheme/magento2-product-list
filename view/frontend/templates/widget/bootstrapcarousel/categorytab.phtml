@@ -1,0 +1,218 @@
+<?php
+use Magento\Framework\App\Action\Action;
+$_vesHelper = $this->helper('Ves\Productlist\Helper\Data');
+$_imgHelper = $this->helper('Ves\Productlist\Helper\Image');
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+$blockId = rand().time();
+$templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+$html = $classes = '';
+$tabId = 'productlist-'.$blockId;
+
+// General Settings
+$widget_title = $this->getConfig('widget_title');
+$addition_class = $this->getConfig('addition_class');
+$cmsblock = $this->getConfig('cmsblock');
+$pretext_html = $this->getConfig('pretext_html');
+if($cmsblock === 'pretext_html'){
+    $pretext_html = str_replace(" ", "+", $pretext_html);
+    $html = base64_decode($pretext_html);
+}elseif($cmsblock!=''){
+    $html = $this->getCmsBlockModel()->load($cmsblock)->getContent();
+}
+$html = $_vesHelper->filter($html);
+
+
+// Tab Settings
+$number_item = $this->getConfig('number_item',12);
+$number_item_percolumn = (int)$this->getConfig('number_item_percolumn',200);
+$enable_animate_tab = $this->getConfig('enable_animate_tab');
+$animation_speed = (int)$this->getConfig('animation_speed',"slow");
+$collapsible = $this->getConfig('collapsible');
+$cycle = $this->getConfig('cycle',1000);
+$default_tab = (int)$this->getConfig('default_tab',0);
+$transition_in = $this->getConfig('transition_in',"fadeIn");
+$transition_in_easing = $this->getConfig('transition_in_easing',"swing");
+$transition_out = $this->getConfig('transition_out',"fadeOut");
+$transition_out_easing = $this->getConfig('transition_out_easing',"swing");
+$event = $this->getConfig('event',"click");
+$defaultTabId = '';
+$ajaxBlockId = 'productlist-carousel-'.$blockId;
+
+
+// Item Settings
+$item_height = (int)(str_replace("px","",$this->getConfig('item_height', "")));
+$show_image = $this->getConfig('show_image');
+$image_width = (int)$this->getConfig('image_width',300);
+$image_height = (int)$this->getConfig('image_height');
+$alt_image = $this->getConfig('alt_image', true);
+$alt_image_column = $this->getConfig('alt_image_column','position');
+$alt_image_column_value = $this->getConfig('alt_image_column_value',2);
+$show_name = $this->getConfig('show_name');
+$show_name_single_line = $this->getConfig('show_name_single_line');
+if($show_name_single_line){
+    $classes .= ' single-line-name';
+}
+
+// Bootstrap Carousel
+$number_item_perpage = $this->getConfig('number_item_perpage',6);
+$lg_column_item = $this->getConfig('lg_column_item',4);
+$lg_column = 12/$lg_column_item;
+$md_column_item = $this->getConfig('md_column_item',3);
+$md_column = 12/$md_column_item;
+$sm_column_item = $this->getConfig('sm_column_item',2);
+$sm_column = 12/$sm_column_item;
+$xs_column_item = $this->getConfig('xs_column_item',2);
+$xs_column = 12/$xs_column_item;
+$interval = $this->getConfig('interval',"false");
+$bnav = $this->getConfig('bnav');
+$bdots = $this->getConfig('bdots');
+$productsource = $this->getConfig('productsource', 'latest');
+
+
+// Convert collection to multiple row
+// Default column
+$column = 8;
+$tabs = $this->getTabs();
+foreach ($tabs as $k => $tab) {
+    if(!$tab['ajax_type']){
+        $category = $this->getCategory($tab['category_id']);
+        $collection = $this->getProductsBySource($productsource, ['categories' => [$tab['category_id']]]);
+        $total = $collection->count();
+        $tabs[$k]['productCollection'] = $collection;
+        $tabs[$k]['productCount'] = $total;
+        if($total == 0) unset($tabs[$k]);
+    }
+    if(isset($tabs[$k])){
+        if($tabs[$k]['item_title']==''){
+            $category = $this->getCategory($tab['category_id']);
+            $tabs[$k]['item_title'] = $category->getName();
+        }
+
+        $tabs[$k]['id'] = str_replace('_','-','productlist-'.$tab['category_id'].'-'.rand().time());
+        if(isset($tabs[$k]['position']) && $default_tab && $tabs[$k]['position'] == $default_tab){
+            $defaultTabId = 'tab-'.$tabs[$k]['id'];
+        }
+    }
+}
+$data = $this->getData();
+?>
+<div id="<?php echo $tabId; ?>" class="block widget ves-widget productlist-widget productlist-easytab-play <?php echo $addition_class?$addition_class:'' ?>">
+    <?php if($widget_title){ ?>
+    <div class="block-title">
+        <strong><?php echo $widget_title ?></strong>
+    </div>
+    <?php if($html!=''){ ?>
+    <div class="pretext-html"><?php echo $html ?></div>
+    <?php } ?>
+    <?php } ?>
+    <?php if(count($tabs)>0){ ?>
+    <div id="easytab-<?php echo $blockId ?>" class="block-content"
+        data-animate="<?php echo $enable_animate_tab?'true':'false'; ?>"
+        data-animation-speed="<?php echo $animation_speed; ?>"
+        data-collapsible="<?php echo $collapsible?"true":"false" ?>"
+        <?php if($cycle){ ?>data-cycle="<?php echo $cycle ?>"<?php } ?>
+        <?php if($defaultTabId){ ?>data-default-tab="<?php echo "#".$defaultTabId ?>"<?php } ?>
+        <?php if($transition_in){ ?>data-transition-in="<?php echo $transition_in ?>"<?php } ?>
+        <?php if($transition_in_easing){ ?>data-transition-in-easing="<?php echo $transition_in_easing ?>"<?php } ?>
+        <?php if($transition_out){ ?>data-transition-out="<?php echo $transition_out ?>"<?php } ?>
+        <?php if($transition_out_easing){ ?>data-transition-out-easing="<?php echo $transition_out_easing ?>"<?php } ?>
+        data-event="<?php echo $event ?>"
+        >
+        <ul class="etabs">
+            <?php foreach ($tabs as $k => $tab) { ?>
+            <li class="nav-item tab <?php echo $tab['item_class']?$tab['item_class']:'' ?>" id="tab-<?php echo $tab['id']; ?>"><a href="#<?php echo $tab['id'] ?>"><?php echo $tab['item_title']?$tab['item_title']:'' ?></a></li>
+            <?php } ?>
+        </ul>
+        <div class="tab-content productlist-owlcarousel-play" id="<?php echo $ajaxBlockId ?>" >
+            <?php foreach ($tabs as $k => $tab) { ?>
+            <div id="<?php echo $tab['id'] ?>" class="ves-products-grid grid carousel slide <?php echo $classes ?> <?php echo $tab['item_class']?$tab['item_class']:'' ?>" data-interval="false" data-ride="carousel">
+                <?php
+                $classTmp = 'bootstrap-carousel';
+                if(!isset($tab['productCount']) && !isset($tab['productCount'])){
+                    $classTmp = 'bootstrap-carousel';
+                } ?>
+                <div class="<?php echo $classTmp ?> product-items carousel-inner">
+                    <?php if(isset($tab['productCount']) && $tab['productCount']>0){ ?>
+                    <?php // Product List ?>
+                    <?php
+                    $data['collection'] = $tab['productCollection']->getItems();
+                    echo $this->getProductHtml($data); ?>
+                    <?php } ?>
+                </div>
+
+                <!-- Left and right controls -->
+                <?php if(isset($tab['ajax_type']) && $tab['ajax_type'] == 0 && $bnav && isset($tab['productCount']) && $tab['productCount']>$number_item_perpage){ ?>
+                <div class="nav-controls">
+                    <a class="left carousel-control" href="#<?php echo $tab['id'] ?>" role="button" data-slide="prev">
+                        <i class="fa fa-angle-left"></i>
+                        <span class="sr-only"><?php echo __('Previous'); ?></span>
+                    </a>
+                    <a class="right carousel-control" href="#<?php echo $tab['id'] ?>" role="button" data-slide="next">
+                        <i class="fa fa-angle-right"></i>
+                        <span class="sr-only"><?php echo __('Next'); ?></span>
+                    </a>
+                </div>
+                <?php } ?>
+
+                <?php
+                if(isset($tab['ajax_type']) && $tab['ajax_type'] == 0 && $bdots && isset($tab['productCount']) && $tab['productCount']>$number_item_perpage){
+                    $totalPage = $tab['productCount']/$number_item_perpage;
+                    if($tab['productCount']%$number_item_perpage!=0){
+                        $totalPage = round($tab['productCount']/$number_item_perpage)+1;
+                    }
+                    ?>
+                    <ol class="carousel-indicators">
+                        <?php for ($z=0; $z < $totalPage; $z++) { ?>
+                        <li data-target="#<?php echo $tab['id'] ?>" data-slide-to="<?php echo $z ?>" <?php if($z==0){ ?>class="active" <?php } ?>></li>
+                        <?php } ?>
+                    </ol>
+                    <?php } ?>
+
+                </div>
+                <?php } ?>
+            </div>
+        </div>
+        
+        <script type="text/javascript">
+            require(['jquery'],function($){
+                $(document).ready(function(){
+                    require([
+                        'jquery',
+                        <?php if($this->helper("Ves\All\Helper\Data")->getConfig("enable_bootstrap_js")): ?>
+                        "Ves_All/lib/bootstrap/js/bootstrap.min",
+                        <?php endif; ?>
+                        'Ves_Productlist/js/productlist',
+                        ], function ($, productlist) {
+		    	    var vesProductList = $('#<?php echo $tabId; ?>').productlist().data('ves-productlist');
+                            var ajaxUrl = "<?php echo $this->getAjaxUrl() ?>";
+                            vesProductList.easyTabInit("<?php echo '#easytab-'.$blockId ?>").bind("easytabs:before",function(e, $clicked, $targetPanel, settings) {
+                                jQuery($targetPanel.selector).addClass("paneltab");
+                            }).bind("easytabs:after",function(e, $clicked, $targetPanel, settings) {
+                                jQuery($targetPanel.selector).removeClass("paneltab");
+                            });
+                            <?php
+                            $widgetData = $this->getData();
+                            unset($widgetData['pretext_html']);
+                            unset($widgetData['tabs']);
+                            ?>
+                            <?php foreach ($tabs as $_tab) { ?>
+                                <?php
+                                $data = [];
+                                $data = $widgetData;
+                                $data['ajaxBlockId'] = $ajaxBlockId;
+                                $data['number_item'] = $widgetData['number_item'];
+                                $data['tab'] = $_tab;
+                                ?>
+                                <?php if(isset($_tab['ajax_type']) && $_tab['ajax_type'] == 1){ ?>
+                                    vesProductList.ajaxProducts(<?php echo json_encode($data) ?>, ajaxUrl);
+                                    <?php } ?>
+                                    <?php if(isset($_tab['ajax_type']) && $_tab['ajax_type'] == 2){ ?>
+                                        vesProductList.ajaxClickProduct(<?php echo json_encode($data) ?>, ajaxUrl);
+                                        <?php } ?>
+                                        <?php } ?>
+                    });
+                });
+            });
+</script>
+<?php } ?>
+</div>

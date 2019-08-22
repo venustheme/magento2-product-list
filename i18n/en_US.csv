@@ -1,0 +1,165 @@
+"Not use","Not use"
+"After page is loaded","After page is loaded"
+"After tab title is clicked","After tab title is clicked"
+Latest,Latest
+"New Arrival","New Arrival"
+Special,Special
+"Most Popular","Most Popular"
+"Best Seller","Best Seller"
+"Top Rated","Top Rated"
+Random,Random
+Featured,Featured
+Deals,Deals
+Category,Category
+Title,Title
+Class,Class
+Ajax,Ajax
+Position,Position
+"WYSIWYG Editor","WYSIWYG Editor"
+"Source for Tab","Source for Tab"
+"Out of stock","Out of stock"
+Text,Text
+Icon,Icon
+"Text, Icon","Text, Icon"
+"Icon, Text","Icon, Text"
+"Custom Height","Custom Height"
+"Auto Equal Height","Auto Equal Height"
+"Auto Height","Auto Height"
+Add,Add
+"Add after","Add after"
+Delete,Delete
+"was added to your shopping cart.","was added to your shopping cart."
+"Continue Shopping","Continue Shopping"
+Checkout,Checkout
+"View cart &amp; checkout","View cart &amp; checkout"
+Previous,Previous
+Sale,Sale
+New,New
+"Add to Cart","Add to Cart"
+"In stock","In stock"
+"Add to Wish List","Add to Wish List"
+"Add to Compare","Add to Compare"
+Day,Day
+Hours,Hours
+Mins,Mins
+Secs,Secs
+Expired,Expired
+"Learn More","Learn More"
+"Insert Widget...","Insert Widget..."
+Adding...,Adding...
+Added,Added
+"Ves Product List: Tab by Source and Conditions","Ves Product List: Tab by Source and Conditions"
+"General Settings","General Settings"
+"Addition Class","Addition Class"
+"Select Static Block","Select Static Block"
+"Pretext HTML","Pretext HTML"
+"Product Template","Product Template"
+"Input custom product template file path. Default: <b>Ves_Productlist::widget/bootstrapcarousel/items.phtml</b>","Input custom product template file path. Default: <b>Ves_Productlist::widget/bootstrapcarousel/items.phtml</b>"
+"Module Template","Module Template"
+"Input custom module template file path. For example: <b>widget/tabs.phtml</b>. Empty for default","Input custom module template file path. For example: <b>widget/tabs.phtml</b>. Empty for default"
+"Tab Settings","Tab Settings"
+"Tab Manage","Tab Manage"
+Conditions,Conditions
+"jQuery EasyTabs Plugin Options","jQuery EasyTabs Plugin Options"
+"Enable Animate Tab","Enable Animate Tab"
+"Animation Speed","Animation Speed"
+Collapsible,Collapsible
+"Makes panels collapse and un-collapse if active tab is clicked repeatedly.","Makes panels collapse and un-collapse if active tab is clicked repeatedly."
+Cycle,Cycle
+"Defaut Tab Position","Defaut Tab Position"
+"Transition In","Transition In"
+"Transition In Easing","Transition In Easing"
+"Transition Out","Transition Out"
+"Transition Out Easing","Transition Out Easing"
+Event,Event
+"Item Settings","Item Settings"
+"Show Name","Show Name"
+"Show Name In Single Line","Show Name In Single Line"
+"Show Short Description","Show Short Description"
+"Description Character Limit","Description Character Limit"
+"Empty to show all short description","Empty to show all short description"
+"Show More Link","Show More Link"
+"Show Price","Show Price"
+"Show Review","Show Review"
+"Show Countdown Timer","Show Countdown Timer"
+"Show New Label","Show New Label"
+"Show Sale Label","Show Sale Label"
+Image,Image
+"Show Image","Show Image"
+"Image Width","Image Width"
+"Image Height","Image Height"
+"Aspect Ratio","Aspect Ratio"
+"If set to Yes, it will keep aspect ratio of the product image (height of the image will be calculated automatically based on width).
+					If set to No, Magento will automatically transform each image into square. If the original image was rectangular, the empty space at the sides will be filled with white color.
+				","If set to Yes, it will keep aspect ratio of the product image (height of the image will be calculated automatically based on width).
+					If set to No, Magento will automatically transform each image into square. If the original image was rectangular, the empty space at the sides will be filled with white color.
+				"
+"Alternative Image","Alternative Image"
+"Set <b>Show Image: Enable</b>","Set <b>Show Image: Enable</b>"
+"Select Alternative Image By Column","Select Alternative Image By Column"
+"Alternative Image Column Value","Alternative Image Column Value"
+"Compare Link","Compare Link"
+Show,Show
+"Compare Format","Compare Format"
+"Compare Text","Compare Text"
+"Compare Class","Compare Class"
+"Wishlist Link","Wishlist Link"
+"Wishlist Format","Wishlist Format"
+"Wishlist Text","Wishlist Text"
+"Wishlist Class","Wishlist Class"
+"Add to Cart Button","Add to Cart Button"
+"Add To Cart Popup Width","Add To Cart Popup Width"
+"Add To Cart Popup Height","Add To Cart Popup Height"
+"Add To Cart Format","Add To Cart Format"
+"Add To Cart Text","Add To Cart Text"
+"Add To Cart Class","Add To Cart Class"
+"Quickview Button","Quickview Button"
+"Quickview Popup Width","Quickview Popup Width"
+"Quickview Popup Height","Quickview Popup Height"
+"Quickview Format","Quickview Format"
+"Quick View Text","Quick View Text"
+"Quick View Class","Quick View Class"
+"Carousel Settings","Carousel Settings"
+Type,Type
+"Number Item","Number Item"
+"Bootstrap Carousel Settings","Bootstrap Carousel Settings"
+"Number of Item per Page","Number of Item per Page"
+"Number Column on Large Desktop","Number Column on Large Desktop"
+"Large devices Desktops (≥1200px)","Large devices Desktops (≥1200px)"
+"Number Column on Desktop","Number Column on Desktop"
+"Medium devices Desktops (≥992px)","Medium devices Desktops (≥992px)"
+"Number Column on Tablets","Number Column on Tablets"
+"Small devices Tablets (≥768px)","Small devices Tablets (≥768px)"
+"Number Column on Phones","Number Column on Phones"
+"Extra small devices Phones (<768px)","Extra small devices Phones (<768px)"
+"Show next/prev buttons.","Show next/prev buttons."
+"Show Dots navigations","Show Dots navigations"
+"OWL Carousel Settings","OWL Carousel Settings"
+"Number of Item per Column","Number of Item per Column"
+"Multiple Row","Multiple Row"
+"Item Height","Item Height"
+"Unit: pixel. Empty to display normally","Unit: pixel. Empty to display normally"
+"Number Columns On Page (Large display)","Number Columns On Page (Large display)"
+"Show number items when screen size 1200px and up","Show number items when screen size 1200px and up"
+"Number Columns On Page","Number Columns On Page"
+"Show number items when screen size between 1199px and 980px","Show number items when screen size between 1199px and 980px"
+"Number Columns On Page (Portrait tablets)","Number Columns On Page (Portrait tablets)"
+"Show number items when screen size between 979px and 769px","Show number items when screen size between 979px and 769px"
+"Number Columns On Page (Phones to tablets)","Number Columns On Page (Phones to tablets)"
+"Show number items when screen size between 768px and 641px","Show number items when screen size between 768px and 641px"
+"Number Columns On Page (Phones to Small tablets)","Number Columns On Page (Phones to Small tablets)"
+"Show number items when screen size between 640px and 480px","Show number items when screen size between 640px and 480px"
+"Number Columns On Page (Phones)","Number Columns On Page (Phones)"
+"Show number items when screen size bellow 480px","Show number items when screen size bellow 480px"
+Autoplay,Autoplay
+"Autoplay Timeout","Autoplay Timeout"
+"Show dots navigations","Show dots navigations"
+"Navigation Next Button Text","Navigation Next Button Text"
+"Navigation Previous Button Text","Navigation Previous Button Text"
+"RTL Layout","RTL Layout"
+Loop,Loop
+"Infinity loop. Duplicate last and first items to get loop illusion.","Infinity loop. Duplicate last and first items to get loop illusion."
+"Ves Product List: Tab by Category","Ves Product List: Tab by Category"
+"Input custom product template file path. Default:<b>Ves_Productlist::widget/bootstrapcarousel/items.phtml</b>","Input custom product template file path. Default:<b>Ves_Productlist::widget/bootstrapcarousel/items.phtml</b>"
+"Empty tab title to show realy category title","Empty tab title to show realy category title"
+Source,Source

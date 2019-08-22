@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_layout.xsd">
+	<update handle="catalog_product_view"/>
+	<head>
+        <css src="Magento_Swatches::css/swatches.css"/>
+    </head>
+	<body>
+		<referenceContainer name="page.top" remove="true"/>
+		<referenceContainer name="content.top" remove="true"/>
+		<referenceContainer name="top.container" remove="true"/>
+		<referenceContainer name="content.bottom" remove="true"/>
+		<referenceContainer name="content.aside" remove="true"/>
+		<referenceContainer name="header.container" remove="true"/>
+		<referenceContainer name="header.panel" remove="true"/>
+		<referenceContainer name="sidebar.main" remove="true"/>
+		<referenceContainer name="sidebar.additional" remove="true"/>
+		<referenceContainer name="footer" remove="true"/>
+		<referenceContainer name="page.bottom" remove="true"/>
+		<referenceBlock name="product.info.details" remove="true"/>
+		<referenceContainer name="product.info.extrahint" remove="true"/>
+		<referenceBlock name="product.info.review" display="false"/>
+		<referenceBlock name="before.body.end" display="false"/>
+		<referenceContainer name="product.info.options.configurable" remove="true"/>
+	</body>
+</layout>

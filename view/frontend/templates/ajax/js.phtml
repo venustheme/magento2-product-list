@@ -1,0 +1,102 @@
+<?php
+	// $theme_helper = $this->helper("Ves\Themesettings\Helper\Theme");
+	$enable_ajax = true;
+	// if($theme_helper){
+	// 	$enable_ajax = $theme_helper->getGeneralCfg("general_settings/enable_ajaxcart");
+	// }
+	if($enable_ajax):
+?>
+<script type="text/x-magento-init">
+	{
+		"[data-role=productlist-tocart-form], .form.map.checkout": {
+			"vesaddtocart": {}
+		}
+	}
+</script>
+<?php endif; ?>
+<script type="text/javascript">
+require(['jquery'],function($){
+    $(document).ready(function(){
+	require([
+		'jquery',
+		<?php if($this->helper("Ves\All\Helper\Data")->getConfig("enable_fancybox")): ?>
+	        "Ves_All/lib/fancybox/jquery.fancybox.pack",
+	        <?php endif; ?>
+		'Magento_Customer/js/customer-data'
+		],
+		function(customerData){
+			jQuery(document).ready(function($) {
+
+				jQuery(document).on("click", ".productlist-fancybox", function(){
+					var config = {};
+					if(jQuery(this).data('fancybox-height')){
+						config['minHeight'] = jQuery(this).data('fancybox-height');
+						config['height'] = jQuery(this).data('fancybox-height');
+					}
+					if(jQuery(this).data('fancybox-width')){
+						config['minWidth'] = jQuery(this).data('fancybox-width');
+						config['width'] = jQuery(this).data('fancybox-width');
+					}
+					if(jQuery(this).data('fancybox-type')){
+						config['type'] = jQuery(this).data('fancybox-type');
+					}
+					if(jQuery(this).data('fancybox-overlay-color')){
+						config['overlayColor'] = jQuery(this).data('fancybox-overlay-color');
+					}
+					if(jQuery(this).data('fancybox-overlay-show')){
+						config['overlayShow'] = jQuery(this).data('fancybox-overlay-show');
+					}
+					if(jQuery(this).data('fancybox-padding')){
+						config['padding'] = jQuery(this).data('fancybox-padding');
+					}
+					if(jQuery(this).data('fancybox-margin')){
+						config['margin'] = jQuery(this).data('fancybox-margin');
+					}
+					if(jQuery(this).data('fancybox-easing-in')){
+						config['easingIn'] = jQuery(this).data('fancybox-easing-in');
+					}
+					if(jQuery(this).data('fancybox-easing-out')){
+						config['easingOut'] = jQuery(this).data('fancybox-easing-out');
+					}
+					if(jQuery(this).data('fancybox-auto-size')){
+						config['autoSize'] = jQuery(this).data('fancybox-auto-size');
+					}
+					if(jQuery(this).attr('href')){
+						config['href'] = jQuery(this).attr('href');
+					}
+					if(jQuery(this).data('fancybox-href')){
+						config['href'] = jQuery(this).data('fancybox-href');
+					}
+					config['helpers'] = {
+						overlay: {
+							locked: false
+						}
+					}
+					if($(window).width()<=768){
+						var pHref = jQuery(this).data('fancybox-href');
+						pHref = pHref + 'is_redirect/true';
+						window.location = pHref;
+						return false;
+					}
+					// Update Minicart
+					config['afterClose'] = function(){
+						$.ajax({
+							url: "<?php echo $this->helper('Ves\Productlist\Helper\Data')->getRefreshCartUrl() ?>",
+							type: 'post',
+							dataType: 'json',
+							beforeSend: function() {
+								$('[data-block="minicart"]').trigger('contentLoading');
+							},
+							success: function(res) {
+								$('[data-block="minicart"]').trigger('contentUpdated');
+							}
+						});
+					}
+					jQuery.fancybox.open(config);
+				return false;
+			});
+		});
+	});
+	});
+});
+</script>
