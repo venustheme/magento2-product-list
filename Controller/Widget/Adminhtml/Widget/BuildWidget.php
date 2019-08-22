@@ -55,9 +55,23 @@ class BuildWidget extends \Magento\Widget\Controller\Adminhtml\Widget\BuildWidge
 		$this->getResponse()->setBody($html);
 	}
 	public function isBase64Encoded($data) {
-		if(base64_encode(base64_decode($data)) === $data){
-			return true;
-		}
-		return false;
-	}
+        if(base64_encode($data) === $data) return false;
+        if(base64_encode(base64_decode($data)) === $data){
+            return true;
+        }
+        if (!preg_match('~[^0-9a-zA-Z+/=]~', $data)) {
+            $check = str_split(base64_decode($data));
+            $x = 0;
+            foreach ($check as $char) if (ord($char) > 126) $x++;
+            if ($x/count($check)*100 < 30) return true;
+        }
+        $decoded = base64_decode($data);
+        // Check if there are valid base64 characters
+        if (!preg_match('/^[a-zA-Z0-9\/\r\n+]*={0,2}$/', $data)) return false;
+        // if string returned contains not printable chars
+        if (0 < preg_match('/((?![[:graph:]])(?!\s)(?!\p{L}))./', $decoded, $matched)) return false;
+        if (!preg_match('%^[a-zA-Z0-9/+]*={0,2}$%', $data)) return false;
+
+        return false;
+    }
 }

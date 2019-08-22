@@ -119,13 +119,9 @@ class WysiwygEditor extends Template implements RendererInterface
 
             $html .= <<<HTML
             <script>
-            window.tinyMCE_GZ = window.tinyMCE_GZ || {}; window.tinyMCE_GZ.loaded = true;
             require([
-                "jquery",
-                "mage/translate",
-                "mage/adminhtml/events",
-                "mage/adminhtml/wysiwyg/tiny_mce/setup",
-                "mage/adminhtml/wysiwyg/widget"
+                'jquery',
+                'Ves_Productlist/js/wysiwyg/tiny_mce/setup'
             ], function(jQuery){
             var config = $config,
                 editor;
@@ -145,7 +141,7 @@ class WysiwygEditor extends Template implements RendererInterface
                 config
             );
 
-            editor{$element->getHtmlId()}.toggle();
+            editor{$element->getHtmlId()}.turnOn();
             varienGlobalEvents.clearEventHandlers("open_browser_callback");
             varienGlobalEvents.attachEventHandler("open_browser_callback", editor{$element->getHtmlId()}.openFileBrowser);
             jQuery('#{$element->getHtmlId()}')

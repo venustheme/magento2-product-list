@@ -11,7 +11,7 @@
 require([
     "jquery",
     "tinymce",
-    "wysiwygAdapter",
+    "prototype",
     "mage/adminhtml/events"
 ], function(jQuery, tinyMCE){
 
@@ -73,7 +73,7 @@ var productlistWysiwygEditor = {
     okDialogWindow : function(dialogWindow) {
         if (dialogWindow.options.firedElementId) {
             wysiwygObj = eval('wysiwyg'+dialogWindow.options.firedElementId+'_editor');
-            wysiwygObj.toggle();
+            wysiwygObj.turnOff();
             if (tinyMCE.get(wysiwygObj.id)) {
                 $(dialogWindow.options.firedElementId).value = tinyMCE.get(wysiwygObj.id).getContent();
             } else {

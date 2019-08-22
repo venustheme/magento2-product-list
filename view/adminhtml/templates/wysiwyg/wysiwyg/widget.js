@@ -5,7 +5,7 @@
 
 define([
     "jquery",
-    "wysiwygAdapter",
+    "tinymce",
     'Magento_Ui/js/modal/alert',
     "jquery/ui",
     "mage/translate",

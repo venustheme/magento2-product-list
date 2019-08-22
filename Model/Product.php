@@ -41,6 +41,8 @@ class Product extends \Magento\Framework\DataObject
      */
     protected $_reportCollection;
 
+    protected $_vesreportCollection;
+
     /**
      * @var \Magento\Catalog\Model\Product\Visibility
      */
@@ -78,7 +80,8 @@ class Product extends \Magento\Framework\DataObject
 
     /**
      * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory 
-     * @param \Magento\Reports\Model\ResourceModel\Product\CollectionFactory $reportCollection         
+     * @param \Magento\Reports\Model\ResourceModel\Product\CollectionFactory $reportCollection
+     * @param \Ves\Productlist\Model\ResourceModel\Reports\Product\CollectionFactory $vesreportCollection        
      * @param \Magento\Catalog\Model\Product\Visibility                      $catalogProductVisibility 
      * @param \Magento\Framework\Stdlib\DateTime\TimezoneInterface           $localeDate               
      * @param \Magento\Store\Model\StoreManagerInterface                     $storeManager             
@@ -93,6 +96,7 @@ class Product extends \Magento\Framework\DataObject
     public function __construct(
         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
         \Magento\Reports\Model\ResourceModel\Product\CollectionFactory $reportCollection,
+        \Ves\Productlist\Model\ResourceModel\Reports\Product\CollectionFactory $vesreportCollection,
         \Magento\Catalog\Model\Product\Visibility $catalogProductVisibility,
         \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
@@ -107,6 +111,7 @@ class Product extends \Magento\Framework\DataObject
         $this->_localeDate               = $localeDate;
         $this->_productCollectionFactory = $productCollectionFactory;
         $this->_reportCollection         = $reportCollection;
+        $this->_vesreportCollection      = $vesreportCollection;
         $this->_catalogProductVisibility = $catalogProductVisibility;
         $this->_storeManager             = $storeManager;
         $this->date                      = $date;
@@ -492,6 +497,34 @@ class Product extends \Magento\Framework\DataObject
         return $collection;
     }
 
+    public function getInterval(){
+        $interval = $this->getData("interval");
+        if(!$interval) {
+            $interval = 45;
+        }
+        return (int)$interval;
+    }
+    /**
+     * Retrieve From To Interval
+     *
+     * @return array
+     */
+    public function getFromTo()
+    {
+        $from = '';
+        $to = '';       
+        $interval = (int)$this->getInterval();
+        
+        if ($interval > 0) {
+            $dtTo = new \DateTime();
+            $dtFrom = clone $dtTo;
+            // last $interval day(s)
+            $dtFrom->modify("-{$interval} day");
+            $from = $dtFrom->format('Y-m-d');
+            $to = $dtTo->format('Y-m-d');
+        }       
+        return [$from, $to];
+    }   
     /**
      * Most viewed product collection
      *
@@ -499,8 +532,9 @@ class Product extends \Magento\Framework\DataObject
      */
     public function getMostViewedProducts($config = [])
     {
-        /** @var $collection \Magento\Reports\Model\ResourceModel\Product\CollectionFactory */
-        $collection = $this->_reportCollection->create()->addAttributeToSelect('*')->addViewsCount();
+        list($from, $to) = $this->getFromTo();
+        /** @var $collection \Ves\Productlist\Model\ResourceModel\Reports\Product\CollectionFactory */
+        $collection = $this->_vesreportCollection->create()->addAttributeToSelect('*')->addViewsCount($from, $to);
         if (isset($config['categories'])) {
             if ($this->productState->isFlatEnabled()) {
                 $collection->joinField(
