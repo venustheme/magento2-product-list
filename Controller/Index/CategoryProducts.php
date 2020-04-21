@@ -25,14 +25,21 @@ class CategoryProducts extends \Magento\Framework\App\Action\Action
 	protected $resultPageFactory;
 	protected $_categoryModel;
 
+	/**
+     * @var \Magento\Framework\Stdlib\DateTime\TimezoneInterface
+     */
+	protected $_localeDate;
+	
 	public function __construct(
 		\Magento\Framework\App\Action\Context $context,
 		\Magento\Framework\View\Result\PageFactory $resultPageFactory,
-		\Magento\Catalog\Model\Category $categoryModel
+		\Magento\Catalog\Model\Category $categoryModel,
+		\Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate
 		)
 	{
 		$this->resultPageFactory = $resultPageFactory;
 		$this->_categoryModel = $categoryModel;
+		$this->_localeDate               = $localeDate;
 		parent::__construct($context);
 	}
 
@@ -43,9 +50,9 @@ class CategoryProducts extends \Magento\Framework\App\Action\Action
 		if (!$this->getRequest()->isAjax() || empty($params)) {
 			return;
 		}
-		$collection = [];
-		$category = $this->_categoryModel->load($params['tab']['category_id']);
-		$collection = $category->getProductCollection()->addAttributeToSelect('*');
+		$number_item = isset($params['number_item'])?(int)$params['number_item']:5;
+		$productsource = isset($params['productsource'])?$params['productsource']:'latest';
+		$collection = $this->getProductCollecionBySource($params['tab']['category_id'], $productsource, $number_item);
 		$data = [];
 		$_productCollection = [];
 
@@ -92,4 +99,132 @@ class CategoryProducts extends \Magento\Framework\App\Action\Action
 			$this->_objectManager->get('Magento\Framework\Json\Helper\Data')->jsonEncode($data)
 			);
 	}
+
+
+	public function getProductCollectionBySource($category_id, $source_key = "latest", $pagesize=5, $curpage = 1){
+		$collection = [];
+		$category = $this->_categoryModel->load($category_id);
+		$collection = $category->getProductCollection()->addAttributeToSelect('*');
+		switch ($source_key) {
+            case 'latest':
+				//Write code at here
+				$collection->addStoreFilter()
+							->setPageSize($pagesize)
+							->setCurPage($curpage)
+							->getSelect()->order("e.entity_id DESC")->group("e.entity_id");
+            break;
+            case 'new_arrival':
+				//Write code at here
+				$todayStartOfDayDate = $this->_localeDate->date()->setTime(0, 0, 0)->format('Y-m-d H:i:s');
+				$todayEndOfDayDate = $this->_localeDate->date()->setTime(23, 59, 59)->format('Y-m-d H:i:s');
+				$collection->addStoreFilter()->addAttributeToFilter(
+							'news_from_date',
+							[
+							'or' => [
+							0 => ['date' => true, 'to' => $todayEndOfDayDate],
+							1 => ['is' => new \Zend_Db_Expr('null')],
+							]
+							],
+							'left'
+							)->addAttributeToFilter(
+							'news_to_date',
+							[
+							'or' => [
+							0 => ['date' => true, 'from' => $todayStartOfDayDate],
+							1 => ['is' => new \Zend_Db_Expr('null')],
+							]
+							],
+							'left'
+							)->addAttributeToFilter(
+							[
+							['attribute' => 'news_from_date', 'is' => new \Zend_Db_Expr('not null')],
+							['attribute' => 'news_to_date', 'is' => new \Zend_Db_Expr('not null')],
+							]
+							)->addAttributeToSort(
+							'news_from_date',
+							'desc'
+							)
+							->setPageSize($pagesize)
+							->setCurPage($curpage)
+							->getSelect()->order("e.entity_id DESC")->group("e.entity_id");
+            break;
+            case 'special':
+				//Write code at here
+				$collection->addAttributeToSelect('*')
+						->addStoreFilter()
+						->addMinimalPrice()
+						->addUrlRewrite()
+						->addTaxPercents()
+						->addFinalPrice();
+
+				$collection->setPageSize($pagesize)
+						->setCurPage($curpage)
+						->getSelect()->group("e.entity_id");
+
+				$collection->getSelect()->order("e.entity_id DESC")->where('price_index.final_price < price_index.price');
+            break;
+            case 'most_popular':
+            //Write code at here
+            break;
+            case 'best_seller':
+            //Write code at here
+            break;
+            case 'top_rated':
+            //Write code at here
+            break;
+			case 'random':
+				//Write code at here
+				$collection->addStoreFilter()
+							->setPageSize($pagesize)
+							->setCurPage($curpage)
+							->getSelect()->group("e.entity_id");
+				$collection->getSelect()->order('rand()');
+            break;
+            case 'featured':
+				//Write code at here
+				$collection->addAttributeToFilter(array(array( 'attribute'=>'featured', 'eq' => '1')))
+							->addStoreFilter()
+							->setPageSize($pagesize)
+							->setCurPage($curpage)
+							->getSelect()->order("e.entity_id DESC")->group("e.entity_id");
+            break;
+            case 'deals':
+				//Write code at here
+				$todayStartOfDayDate = $this->_localeDate->date()->setTime(0, 0, 0)->format('Y-m-d H:i:s');
+				$todayEndOfDayDate = $this->_localeDate->date()->setTime(23, 59, 59)->format('Y-m-d H:i:s');
+				$collection->addStoreFilter()->addAttributeToFilter(
+								'special_from_date',
+								[
+								'or' => [
+								0 => ['date' => true, 'to' => $todayEndOfDayDate],
+								1 => ['is' => new \Zend_Db_Expr('null')],
+								]
+								],
+								'left'
+								)->addAttributeToFilter(
+								'special_to_date',
+								[
+								'or' => [
+								0 => ['date' => true, 'from' => $todayStartOfDayDate],
+								1 => ['is' => new \Zend_Db_Expr('not null')],
+								]
+								],
+								'left'
+								)->addAttributeToFilter(
+								[
+								['attribute' => 'special_from_date', 'is' => new \Zend_Db_Expr('not null')],
+								['attribute' => 'special_to_date', 'is' => new \Zend_Db_Expr('not null')],
+								]
+								)->addAttributeToSort(
+								'special_from_date',
+								'desc'
+								)
+								->setPageSize($pagesize)
+								->setCurPage($curpages)
+								->getSelect()->order("e.entity_id DESC")->group("e.entity_id");
+            break;
+        }
+		return $collection;
+	}
+	
 }
