@@ -101,7 +101,7 @@ class CategoryProducts extends \Magento\Framework\App\Action\Action
 	}
 
 
-	public function getProductCollectionBySource($category_id, $source_key = "latest", $pagesize=5, $curpage = 1){
+	public function getProductCollecionBySource($category_id, $source_key = "latest", $pagesize=5, $curpage = 1){
 		$collection = [];
 		$category = $this->_categoryModel->load($category_id);
 		$collection = $category->getProductCollection()->addAttributeToSelect('*');
