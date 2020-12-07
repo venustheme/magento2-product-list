@@ -525,20 +525,11 @@ class Product extends \Magento\Framework\DataObject
         )->addAttributeToFilter([
             ['attribute' => 'special_from_date', 'is' => new \Zend_Db_Expr('not null')],
             ['attribute' => 'special_to_date', 'is' => new \Zend_Db_Expr('not null')],
-        ])->addAttributeToSort('special_from_date', 'desc')
-        ->addAttributeToSelect(['name', 'short_description', 'description'], 'inner')
-        ->addAttributeToSelect(
-            [
-                'price',
-                'special_price',
-                'special_from_date',
-                'special_to_date',
-                'msrp_display_actual_price_type',
-                'msrp',
-                'thumbnail',
-            ],
-            'left'
-        )->applyFrontendPriceLimitations();
+        ])
+        ->addMinimalPrice()
+        ->addUrlRewrite()
+        ->addTaxPercents()
+        ->addFinalPrice();
         if(isset($config['pagesize']) && $config['pagesize']){
             $collection->setPageSize((int)$config['pagesize']);
         }
