@@ -475,7 +475,6 @@ class Product extends \Magento\Framework\DataObject
         $todayEndOfDayDate = $this->_localeDate->date()->setTime(23, 59, 59)->format('Y-m-d H:i:s');
 
         $product = $this->productFactory->create();
-
         /** @var $collection \Magento\Catalog\Model\ResourceModel\Product\Collection */
         $collection = $product->getResourceCollection();
         if (isset($config['categories'])) {
@@ -509,7 +508,7 @@ class Product extends \Magento\Framework\DataObject
             'special_from_date',
             [
                 'or' => [
-                    0 => ['date' => true, 'to' => $todayEndOfDayDate],
+                    0 => ['date' => true, 'to' => $todayStartOfDayDate],
                     1 => ['is' => new \Zend_Db_Expr('null')],
                 ]
             ],
@@ -518,7 +517,7 @@ class Product extends \Magento\Framework\DataObject
             'special_to_date',
             [
                 'or' => [
-                    0 => ['date' => true, 'from' => $todayStartOfDayDate],
+                    0 => ['date' => true, 'from' => $todayEndOfDayDate],
                     1 => ['is' => new \Zend_Db_Expr('null')],
                 ]
             ],
