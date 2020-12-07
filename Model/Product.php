@@ -138,6 +138,9 @@ class Product extends \Magento\Framework\DataObject
         /** @var $collection \Magento\Catalog\Model\ResourceModel\Product\Collection */
         $collection = $this->_productCollectionFactory->create();
         if (isset($config['categories'])) {
+            if(!is_array($config['categories'])){
+                $config['categories'] = explode(",", $config['categories']);
+            }
             if ($this->productState->isFlatEnabled()) {
                 $collection->joinField(
                     'category_id',
@@ -186,10 +189,17 @@ class Product extends \Magento\Framework\DataObject
             )->addAttributeToSort(
             'news_from_date',
             'desc'
-            )
-            ->setPageSize(isset($config['pagesize'])?$config['pagesize']:5)
-            ->setCurPage(isset($config['curpage'])?$config['curpage']:1)
-            ->getSelect()->order("e.entity_id DESC")->group("e.entity_id");
+            );
+
+            if(isset($config['pagesize']) && $config['pagesize']){
+                $collection->setPageSize((int)$config['pagesize']);
+            }
+
+            if(isset($config['curpage']) && $config['curpage']){
+                $collection->setCurPage((int)$config['curpage']);
+            }
+            
+            $collection->getSelect()->order("e.entity_id DESC")->group("e.entity_id");
             return $collection;
         }
 
@@ -203,6 +213,9 @@ class Product extends \Magento\Framework\DataObject
         /** @var $collection \Magento\Catalog\Model\ResourceModel\Product\Collection */
         $collection = $this->_productCollectionFactory->create();
         if (isset($config['categories'])) {
+            if(!is_array($config['categories'])){
+                $config['categories'] = explode(",", $config['categories']);
+            }
             if ($this->productState->isFlatEnabled()) {
                 $collection->joinField(
                     'category_id',
@@ -225,10 +238,16 @@ class Product extends \Magento\Framework\DataObject
         }
         $collection->setVisibility($this->_catalogProductVisibility->getVisibleInCatalogIds())
         ->addAttributeToSelect('*')
-        ->addStoreFilter()
-        ->setPageSize(isset($config['pagesize'])?$config['pagesize']:5)
-        ->setCurPage(isset($config['curpage'])?$config['curpage']:1)
-        ->getSelect()->order("e.entity_id DESC")->group("e.entity_id");
+        ->addStoreFilter();
+
+        if(isset($config['pagesize']) && $config['pagesize']){
+            $collection->setPageSize((int)$config['pagesize']);
+        }
+        if(isset($config['curpage']) && $config['curpage']){
+            $collection->setCurPage((int)$config['curpage']);
+        }
+
+        $collection->getSelect()->order("e.entity_id DESC")->group("e.entity_id");
         return $collection;
     }
 
@@ -243,6 +262,9 @@ class Product extends \Magento\Framework\DataObject
         /** @var $collection \Magento\Catalog\Model\ResourceModel\Product\Collection */
         $collection = $this->_productCollectionFactory->create();
         if (isset($config['categories'])) {
+            if(!is_array($config['categories'])){
+                $config['categories'] = explode(",", $config['categories']);
+            }
             if ($this->productState->isFlatEnabled()) {
                 $collection->joinField(
                     'category_id',
@@ -274,10 +296,15 @@ class Product extends \Magento\Framework\DataObject
             'at_qty_ordered.store_id=' . (int)$storeId,
             'at_qty_ordered.qty_ordered > 0',
             'left'
-            )
-        ->setPageSize(isset($config['pagesize'])?$config['pagesize']:5)
-        ->setCurPage(isset($config['curpage'])?$config['curpage']:1)
-        ->getSelect()->order("e.entity_id DESC")->group("e.entity_id");
+        );
+        if(isset($config['pagesize']) && $config['pagesize']){
+            $collection->setPageSize((int)$config['pagesize']);
+        }
+        if(isset($config['curpage']) && $config['curpage']){
+            $collection->setCurPage((int)$config['curpage']);
+        }
+
+        $collection->getSelect()->order("e.entity_id DESC")->group("e.entity_id");
         return $collection;
     }
 
@@ -291,6 +318,9 @@ class Product extends \Magento\Framework\DataObject
         /** @var $collection \Magento\Catalog\Model\ResourceModel\Product\Collection */
         $collection = $this->_productCollectionFactory->create();
         if (isset($config['categories'])) {
+            if(!is_array($config['categories'])){
+                $config['categories'] = explode(",", $config['categories']);
+            }
             if ($this->productState->isFlatEnabled()) {
                 $collection->joinField(
                     'category_id',
@@ -313,10 +343,15 @@ class Product extends \Magento\Framework\DataObject
         }
         $collection->setVisibility($this->_catalogProductVisibility->getVisibleInCatalogIds())
         ->addAttributeToSelect('*')
-        ->addStoreFilter()
-        ->setPageSize(isset($config['pagesize'])?$config['pagesize']:5)
-        ->setCurPage(isset($config['curpage'])?$config['curpage']:1)
-        ->getSelect()->group("e.entity_id");
+        ->addStoreFilter();
+
+        if(isset($config['pagesize']) && $config['pagesize']){
+            $collection->setPageSize((int)$config['pagesize']);
+        }
+        if(isset($config['curpage']) && $config['curpage']){
+            $collection->setCurPage((int)$config['curpage']);
+        }
+        $collection->getSelect()->group("e.entity_id");
         $collection->getSelect()->order('rand()');
         return $collection;
     }
@@ -332,6 +367,9 @@ class Product extends \Magento\Framework\DataObject
         /** @var $collection \Magento\Catalog\Model\ResourceModel\Product\Collection */
         $collection = $this->_productCollectionFactory->create();
         if (isset($config['categories'])) {
+            if(!is_array($config['categories'])){
+                $config['categories'] = explode(",", $config['categories']);
+            }
             if ($this->productState->isFlatEnabled()) {
                 $collection->joinField(
                     'category_id',
@@ -363,10 +401,14 @@ class Product extends \Magento\Framework\DataObject
             'at_ves_review.store_id=' . (int)$storeId,
             'ves_review > 0',
             'left'
-            )
-        ->setPageSize(isset($config['pagesize'])?$config['pagesize']:5)
-        ->setCurPage(isset($config['curpage'])?$config['curpage']:1)
-        ->getSelect()->group("e.entity_id");
+        );
+        if(isset($config['pagesize']) && $config['pagesize']){
+            $collection->setPageSize((int)$config['pagesize']);
+        }
+        if(isset($config['curpage']) && $config['curpage']){
+            $collection->setCurPage((int)$config['curpage']);
+        }
+        $collection->getSelect()->group("e.entity_id");
         $collection->getSelect()->order('ves_review DESC');
         return $collection;
     }
@@ -381,6 +423,9 @@ class Product extends \Magento\Framework\DataObject
         /** @var $collection \Magento\Catalog\Model\ResourceModel\Product\Collection */
         $collection = $this->_productCollectionFactory->create();
         if (isset($config['categories'])) {
+            if(!is_array($config['categories'])){
+                $config['categories'] = explode(",", $config['categories']);
+            }
             if ($this->productState->isFlatEnabled()) {
                 $collection->joinField(
                     'category_id',
@@ -408,9 +453,13 @@ class Product extends \Magento\Framework\DataObject
         ->addUrlRewrite()
         ->addTaxPercents()
         ->addFinalPrice();
-        $collection->setPageSize(isset($config['pagesize'])?$config['pagesize']:5)
-        ->setCurPage(isset($config['curpage'])?$config['curpage']:1)
-        ->getSelect()->group("e.entity_id");
+        if(isset($config['pagesize']) && $config['pagesize']){
+            $collection->setPageSize((int)$config['pagesize']);
+        }
+        if(isset($config['curpage']) && $config['curpage']){
+            $collection->setCurPage((int)$config['curpage']);
+        }
+        $collection->getSelect()->group("e.entity_id");
         $collection->getSelect()->order("e.entity_id DESC")->where('price_index.final_price < price_index.price');
         return $collection;
     }
@@ -430,6 +479,9 @@ class Product extends \Magento\Framework\DataObject
         /** @var $collection \Magento\Catalog\Model\ResourceModel\Product\Collection */
         $collection = $product->getResourceCollection();
         if (isset($config['categories'])) {
+            if(!is_array($config['categories'])){
+                $config['categories'] = explode(",", $config['categories']);
+            }
             if ($this->productState->isFlatEnabled()) {
                 $collection->joinField(
                     'category_id',
@@ -488,6 +540,12 @@ class Product extends \Magento\Framework\DataObject
             ],
             'left'
         )->applyFrontendPriceLimitations();
+        if(isset($config['pagesize']) && $config['pagesize']){
+            $collection->setPageSize((int)$config['pagesize']);
+        }
+        if(isset($config['curpage']) && $config['curpage']){
+            $collection->setCurPage((int)$config['curpage']);
+        }
         $collection->getSelect()->order("e.entity_id DESC")->where('price_index.final_price < price_index.price');
         return $collection;
     }
@@ -502,6 +560,9 @@ class Product extends \Magento\Framework\DataObject
         /** @var $collection \Magento\Reports\Model\ResourceModel\Product\CollectionFactory */
         $collection = $this->_reportCollection->create()->addAttributeToSelect('*')->addViewsCount();
         if (isset($config['categories'])) {
+            if(!is_array($config['categories'])){
+                $config['categories'] = explode(",", $config['categories']);
+            }
             if ($this->productState->isFlatEnabled()) {
                 $collection->joinField(
                     'category_id',
@@ -524,10 +585,14 @@ class Product extends \Magento\Framework\DataObject
         }
         $collection->setVisibility($this->_catalogProductVisibility->getVisibleInCatalogIds())
         ->addAttributeToSelect('*')
-        ->addStoreFilter()
-        ->setPageSize(isset($config['pagesize'])?$config['pagesize']:5)
-        ->setCurPage(isset($config['curpage'])?$config['curpage']:1)
-        ->getSelect()->order("e.entity_id DESC")->group("e.entity_id");
+        ->addStoreFilter();
+        if(isset($config['pagesize']) && $config['pagesize']){
+            $collection->setPageSize((int)$config['pagesize']);
+        }
+        if(isset($config['curpage']) && $config['curpage']){
+            $collection->setCurPage((int)$config['curpage']);
+        }
+        $collection->getSelect()->order("e.entity_id DESC")->group("e.entity_id");
         return $collection;
     }
 
@@ -541,6 +606,9 @@ class Product extends \Magento\Framework\DataObject
         /** @var $collection \Magento\Catalog\Model\ResourceModel\Product\Collection */
         $collection = $this->_productCollectionFactory->create();
         if (isset($config['categories'])) {
+            if(!is_array($config['categories'])){
+                $config['categories'] = explode(",", $config['categories']);
+            }
             if ($this->productState->isFlatEnabled()) {
                 $collection->joinField(
                     'category_id',
@@ -564,10 +632,14 @@ class Product extends \Magento\Framework\DataObject
         $collection->setVisibility($this->_catalogProductVisibility->getVisibleInCatalogIds())
         ->addAttributeToSelect('*')
         ->addAttributeToFilter(array(array( 'attribute'=>'featured', 'eq' => '1')))
-        ->addStoreFilter()
-        ->setPageSize(isset($config['pagesize'])?$config['pagesize']:5)
-        ->setCurPage(isset($config['curpage'])?$config['curpage']:1)
-        ->getSelect()->order("e.entity_id DESC")->group("e.entity_id");
+        ->addStoreFilter();
+        if(isset($config['pagesize']) && $config['pagesize']){
+            $collection->setPageSize((int)$config['pagesize']);
+        }
+        if(isset($config['curpage']) && $config['curpage']){
+            $collection->setCurPage((int)$config['curpage']);
+        }
+        $collection->getSelect()->order("e.entity_id DESC")->group("e.entity_id");
         return $collection;
     }
 
