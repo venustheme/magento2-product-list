@@ -22,5 +22,6 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
 	<preference for="Magento\Widget\Controller\Adminhtml\Widget\BuildWidget" type="Ves\Productlist\Controller\Widget\Adminhtml\Widget\BuildWidget" />
+	<preference for="Magento\Widget\Controller\Adminhtml\Widget\Instance\Save" type="Ves\Productlist\Controller\Adminhtml\Widget\Save" />
 	<preference for="Magento\Widget\Model\Widget" type="Ves\Productlist\Model\Widget" />
 </config>

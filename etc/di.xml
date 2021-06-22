@@ -23,5 +23,4 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 	<preference for="Magento\Widget\Controller\Adminhtml\Widget\BuildWidget" type="Ves\Productlist\Controller\Widget\Adminhtml\Widget\BuildWidget" />
 	<preference for="Ves\Productlist\Api\ProductRepositoryInterface" type="Ves\Productlist\Model\Api\ProductRepository" />
-	<!--<preference for="Magento\Widget\Model\Widget\Instance" type="Ves\Productlist\Model\Magento\Widget\Instance" />-->
 </config>
