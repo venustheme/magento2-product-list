@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_PageBuilder:etc/content_type.xsd">
+    <type name="product_tab"
+        label="Lof Products Tab"
+        menu_section="elements"
+        component="Magento_PageBuilder/js/content-type"
+        preview_component="Ves_Productlist/js/content-type/product-tab/preview"
+        master_component="Magento_PageBuilder/js/content-type/master"
+        form="pagebuilder_product_tab_form"
+        icon="icon-pagebuilder-heading"
+        sortOrder="21"
+        translate="label">
+    <children default_policy="deny"/>
+    <parents default_policy="deny">
+        <parent name="column" policy="allow"/>
+    </parents>
+    <appearances>
+        <appearance name="default"
+                default="true"
+                preview_template="Ves_Productlist/content-type/acme_producttab/default/preview"
+                master_template="Ves_Productlist/content-type/acme_producttab/default/master"
+                reader="Magento_PageBuilder/js/master-format/read/configurable">
+            <elements/>
+        </appearance>
+    </appearances>
+    </type>
+</config>
