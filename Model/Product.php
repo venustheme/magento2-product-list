@@ -1,18 +1,18 @@
 <?php
 /**
  * Venustheme
- * 
+ *
  * NOTICE OF LICENSE
- * 
+ *
  * This source file is subject to the Venustheme.com license that is
  * available through the world-wide-web at this URL:
  * http://www.venustheme.com/license-agreement.html
- * 
+ *
  * DISCLAIMER
- * 
+ *
  * Do not edit or add to this file if you wish to upgrade this extension to newer
  * version in the future.
- * 
+ *
  * @category   Venustheme
  * @package    Ves_Productlist
  * @copyright  Copyright (c) 2014 Venustheme (http://www.venustheme.com/)
@@ -60,7 +60,7 @@ class Product extends \Magento\Framework\DataObject
 
     /**
      * \Magento\Framework\App\ResourceConnection
-     * @var [type]
+     * @var \Magento\Framework\App\ResourceConnection
      */
     protected $_resource;
 
@@ -77,18 +77,18 @@ class Product extends \Magento\Framework\DataObject
     protected $stockFilter;
 
     /**
-     * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory 
-     * @param \Magento\Reports\Model\ResourceModel\Product\CollectionFactory $reportCollection         
-     * @param \Magento\Catalog\Model\Product\Visibility                      $catalogProductVisibility 
-     * @param \Magento\Framework\Stdlib\DateTime\TimezoneInterface           $localeDate               
-     * @param \Magento\Store\Model\StoreManagerInterface                     $storeManager             
-     * @param \Magento\Framework\Stdlib\DateTime\DateTime                    $date                     
-     * @param \Magento\Framework\App\ResourceConnection                      $resource                 
-     * @param \Magento\Catalog\Model\Indexer\Product\Flat\State              $productState             
-     * @param \Magento\Catalog\Model\ProductFactory                          $productFactory           
-     * @param \Magento\CatalogInventory\Api\StockConfigurationInterface      $stockConfiguration       
-     * @param \Magento\CatalogInventory\Helper\Stock                         $stockFilter              
-     * @param array                                                          $data                     
+     * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
+     * @param \Magento\Reports\Model\ResourceModel\Product\CollectionFactory $reportCollection
+     * @param \Magento\Catalog\Model\Product\Visibility                      $catalogProductVisibility
+     * @param \Magento\Framework\Stdlib\DateTime\TimezoneInterface           $localeDate
+     * @param \Magento\Store\Model\StoreManagerInterface                     $storeManager
+     * @param \Magento\Framework\Stdlib\DateTime\DateTime                    $date
+     * @param \Magento\Framework\App\ResourceConnection                      $resource
+     * @param \Magento\Catalog\Model\Indexer\Product\Flat\State              $productState
+     * @param \Magento\Catalog\Model\ProductFactory                          $productFactory
+     * @param \Magento\CatalogInventory\Api\StockConfigurationInterface      $stockConfiguration
+     * @param \Magento\CatalogInventory\Helper\Stock                         $stockFilter
+     * @param array                                                          $data
      */
     public function __construct(
         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
@@ -137,7 +137,7 @@ class Product extends \Magento\Framework\DataObject
 
         /** @var $collection \Magento\Catalog\Model\ResourceModel\Product\Collection */
         $collection = $this->_productCollectionFactory->create();
-        if (isset($config['categories'])) {
+        if (isset($config['categories']) && $config['categories']) {
             if(!is_array($config['categories'])){
                 $config['categories'] = explode(",", $config['categories']);
             }
@@ -145,15 +145,15 @@ class Product extends \Magento\Framework\DataObject
                 $collection->joinField(
                     'category_id',
                     $this->_resource->getTableName('catalog_category_product'),
-                    'category_id', 
+                    'category_id',
                     'product_id = entity_id',
-                    'category_id in (' . implode($config['categories'], ",") . ')' ,
+                    'category_id in (' . implode(",", $config['categories']) . ')' ,
                     'at_category_id.category_id == NULL',
                     'left'
                 );
             } else {
                 $collection->joinField(
-                    'category_id', $this->_resource->getTableName('catalog_category_product'), 'category_id', 
+                    'category_id', $this->_resource->getTableName('catalog_category_product'), 'category_id',
                     'product_id = entity_id', null, 'left'
                 )
                 ->addAttributeToFilter('category_id', array(
@@ -198,7 +198,7 @@ class Product extends \Magento\Framework\DataObject
             if(isset($config['curpage']) && $config['curpage']){
                 $collection->setCurPage((int)$config['curpage']);
             }
-            
+
             $collection->getSelect()->order("e.entity_id DESC")->group("e.entity_id");
             return $collection;
         }
@@ -212,7 +212,7 @@ class Product extends \Magento\Framework\DataObject
     {
         /** @var $collection \Magento\Catalog\Model\ResourceModel\Product\Collection */
         $collection = $this->_productCollectionFactory->create();
-        if (isset($config['categories'])) {
+        if (isset($config['categories']) && $config['categories']) {
             if(!is_array($config['categories'])){
                 $config['categories'] = explode(",", $config['categories']);
             }
@@ -220,15 +220,15 @@ class Product extends \Magento\Framework\DataObject
                 $collection->joinField(
                     'category_id',
                     $this->_resource->getTableName('catalog_category_product'),
-                    'category_id', 
+                    'category_id',
                     'product_id = entity_id',
-                    'category_id in (' . implode($config['categories'], ",") . ')' ,
+                    'category_id in (' . implode(",", $config['categories']) . ')' ,
                     'at_category_id.category_id == NULL',
                     'left'
                 );
             } else {
                 $collection->joinField(
-                    'category_id', $this->_resource->getTableName('catalog_category_product'), 'category_id', 
+                    'category_id', $this->_resource->getTableName('catalog_category_product'), 'category_id',
                     'product_id = entity_id', null, 'left'
                 )
                 ->addAttributeToFilter('category_id', array(
@@ -261,7 +261,7 @@ class Product extends \Magento\Framework\DataObject
         $storeId = $this->_storeManager->getStore(true)->getId();
         /** @var $collection \Magento\Catalog\Model\ResourceModel\Product\Collection */
         $collection = $this->_productCollectionFactory->create();
-        if (isset($config['categories'])) {
+        if (isset($config['categories']) && $config['categories']) {
             if(!is_array($config['categories'])){
                 $config['categories'] = explode(",", $config['categories']);
             }
@@ -269,15 +269,15 @@ class Product extends \Magento\Framework\DataObject
                 $collection->joinField(
                     'category_id',
                     $this->_resource->getTableName('catalog_category_product'),
-                    'category_id', 
+                    'category_id',
                     'product_id = entity_id',
-                    'category_id in (' . implode($config['categories'], ",") . ')' ,
+                    'category_id in (' . implode(",", $config['categories']) . ')' ,
                     'at_category_id.category_id == NULL',
                     'left'
                 );
             } else {
                 $collection->joinField(
-                    'category_id', $this->_resource->getTableName('catalog_category_product'), 'category_id', 
+                    'category_id', $this->_resource->getTableName('catalog_category_product'), 'category_id',
                     'product_id = entity_id', null, 'left'
                 )
                 ->addAttributeToFilter('category_id', array(
@@ -317,7 +317,7 @@ class Product extends \Magento\Framework\DataObject
     {
         /** @var $collection \Magento\Catalog\Model\ResourceModel\Product\Collection */
         $collection = $this->_productCollectionFactory->create();
-        if (isset($config['categories'])) {
+        if (isset($config['categories']) && $config['categories']) {
             if(!is_array($config['categories'])){
                 $config['categories'] = explode(",", $config['categories']);
             }
@@ -325,15 +325,15 @@ class Product extends \Magento\Framework\DataObject
                 $collection->joinField(
                     'category_id',
                     $this->_resource->getTableName('catalog_category_product'),
-                    'category_id', 
+                    'category_id',
                     'product_id = entity_id',
-                    'category_id in (' . implode($config['categories'], ",") . ')' ,
+                    'category_id in (' . implode(",", $config['categories']) . ')' ,
                     'at_category_id.category_id == NULL',
                     'left'
                 );
             } else {
                 $collection->joinField(
-                    'category_id', $this->_resource->getTableName('catalog_category_product'), 'category_id', 
+                    'category_id', $this->_resource->getTableName('catalog_category_product'), 'category_id',
                     'product_id = entity_id', null, 'left'
                 )
                 ->addAttributeToFilter('category_id', array(
@@ -366,7 +366,7 @@ class Product extends \Magento\Framework\DataObject
         $storeId = $this->_storeManager->getStore(true)->getId();
         /** @var $collection \Magento\Catalog\Model\ResourceModel\Product\Collection */
         $collection = $this->_productCollectionFactory->create();
-        if (isset($config['categories'])) {
+        if (isset($config['categories']) && $config['categories']) {
             if(!is_array($config['categories'])){
                 $config['categories'] = explode(",", $config['categories']);
             }
@@ -374,15 +374,15 @@ class Product extends \Magento\Framework\DataObject
                 $collection->joinField(
                     'category_id',
                     $this->_resource->getTableName('catalog_category_product'),
-                    'category_id', 
+                    'category_id',
                     'product_id = entity_id',
-                    'category_id in (' . implode($config['categories'], ",") . ')' ,
+                    'category_id in (' . implode(",", $config['categories']) . ')' ,
                     'at_category_id.category_id == NULL',
                     'left'
                 );
             } else {
                 $collection->joinField(
-                    'category_id', $this->_resource->getTableName('catalog_category_product'), 'category_id', 
+                    'category_id', $this->_resource->getTableName('catalog_category_product'), 'category_id',
                     'product_id = entity_id', null, 'left'
                 )
                 ->addAttributeToFilter('category_id', array(
@@ -422,7 +422,7 @@ class Product extends \Magento\Framework\DataObject
     {
         /** @var $collection \Magento\Catalog\Model\ResourceModel\Product\Collection */
         $collection = $this->_productCollectionFactory->create();
-        if (isset($config['categories'])) {
+        if (isset($config['categories']) && $config['categories']) {
             if(!is_array($config['categories'])){
                 $config['categories'] = explode(",", $config['categories']);
             }
@@ -430,15 +430,15 @@ class Product extends \Magento\Framework\DataObject
                 $collection->joinField(
                     'category_id',
                     $this->_resource->getTableName('catalog_category_product'),
-                    'category_id', 
+                    'category_id',
                     'product_id = entity_id',
-                    'category_id in (' . implode($config['categories'], ",") . ')' ,
+                    'category_id in (' . implode(",", $config['categories']) . ')' ,
                     'at_category_id.category_id == NULL',
                     'left'
                 );
             } else {
                 $collection->joinField(
-                    'category_id', $this->_resource->getTableName('catalog_category_product'), 'category_id', 
+                    'category_id', $this->_resource->getTableName('catalog_category_product'), 'category_id',
                     'product_id = entity_id', null, 'left'
                 )
                 ->addAttributeToFilter('category_id', array(
@@ -477,7 +477,7 @@ class Product extends \Magento\Framework\DataObject
         $product = $this->productFactory->create();
         /** @var $collection \Magento\Catalog\Model\ResourceModel\Product\Collection */
         $collection = $product->getResourceCollection();
-        if (isset($config['categories'])) {
+        if (isset($config['categories']) && $config['categories']) {
             if(!is_array($config['categories'])){
                 $config['categories'] = explode(",", $config['categories']);
             }
@@ -485,15 +485,15 @@ class Product extends \Magento\Framework\DataObject
                 $collection->joinField(
                     'category_id',
                     $this->_resource->getTableName('catalog_category_product'),
-                    'category_id', 
+                    'category_id',
                     'product_id = entity_id',
-                    'category_id in (' . implode($config['categories'], ",") . ')' ,
+                    'category_id in (' . implode(",", $config['categories']) . ')' ,
                     'at_category_id.category_id == NULL',
                     'left'
                 );
             } else {
                 $collection->joinField(
-                    'category_id', $this->_resource->getTableName('catalog_category_product'), 'category_id', 
+                    'category_id', $this->_resource->getTableName('catalog_category_product'), 'category_id',
                     'product_id = entity_id', null, 'left'
                 )
                 ->addAttributeToFilter('category_id', array(
@@ -549,7 +549,7 @@ class Product extends \Magento\Framework\DataObject
     {
         /** @var $collection \Magento\Reports\Model\ResourceModel\Product\CollectionFactory */
         $collection = $this->_reportCollection->create()->addAttributeToSelect('*')->addViewsCount();
-        if (isset($config['categories'])) {
+        if (isset($config['categories']) && $config['categories']) {
             if(!is_array($config['categories'])){
                 $config['categories'] = explode(",", $config['categories']);
             }
@@ -557,15 +557,15 @@ class Product extends \Magento\Framework\DataObject
                 $collection->joinField(
                     'category_id',
                     $this->_resource->getTableName('catalog_category_product'),
-                    'category_id', 
+                    'category_id',
                     'product_id = entity_id',
-                    'category_id in (' . implode($config['categories'], ",") . ')' ,
+                    'category_id in (' . implode(",", $config['categories']) . ')' ,
                     'at_category_id.category_id == NULL',
                     'left'
                 );
             } else {
                 $collection->joinField(
-                    'category_id', $this->_resource->getTableName('catalog_category_product'), 'category_id', 
+                    'category_id', $this->_resource->getTableName('catalog_category_product'), 'category_id',
                     'product_id = entity_id', null, 'left'
                 )
                 ->addAttributeToFilter('category_id', array(
@@ -595,7 +595,7 @@ class Product extends \Magento\Framework\DataObject
     {
         /** @var $collection \Magento\Catalog\Model\ResourceModel\Product\Collection */
         $collection = $this->_productCollectionFactory->create();
-        if (isset($config['categories'])) {
+        if (isset($config['categories']) && $config['categories']) {
             if(!is_array($config['categories'])){
                 $config['categories'] = explode(",", $config['categories']);
             }
@@ -603,15 +603,15 @@ class Product extends \Magento\Framework\DataObject
                 $collection->joinField(
                     'category_id',
                     $this->_resource->getTableName('catalog_category_product'),
-                    'category_id', 
+                    'category_id',
                     'product_id = entity_id',
-                    'category_id in (' . implode($config['categories'], ",") . ')' ,
+                    'category_id in (' . implode(",", $config['categories']) . ')' ,
                     'at_category_id.category_id == NULL',
                     'left'
                 );
             } else {
                 $collection->joinField(
-                    'category_id', $this->_resource->getTableName('catalog_category_product'), 'category_id', 
+                    'category_id', $this->_resource->getTableName('catalog_category_product'), 'category_id',
                     'product_id = entity_id', null, 'left'
                 )
                 ->addAttributeToFilter('category_id', array(

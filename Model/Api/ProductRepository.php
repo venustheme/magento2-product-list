@@ -230,7 +230,7 @@ class ProductRepository implements ProductRepositoryInterface
             break;
         }
         $this->extensionAttributesJoinProcessor->process($collection);
-        
+
         $this->collectionProcessor->process($searchCriteria, $collection);
 
         $collection->load();
@@ -239,7 +239,7 @@ class ProductRepository implements ProductRepositoryInterface
         $searchResult->setSearchCriteria($searchCriteria);
         $searchResult->setItems($collection->getItems());
         $searchResult->setTotalCount($collection->getSize());
-        
+
         foreach ($collection->getItems() as $product) {
             $this->cacheProduct(
                 $this->getCacheKey(
@@ -289,8 +289,8 @@ class ProductRepository implements ProductRepositoryInterface
 
         if ($this->cacheLimit && count($this->instances) > $this->cacheLimit) {
             $offset = round($this->cacheLimit / -2);
-            $this->instancesById = array_slice($this->instancesById, $offset, null, true);
-            $this->instances = array_slice($this->instances, $offset, null, true);
+            $this->instancesById = array_slice($this->instancesById, (int)$offset, null, true);
+            $this->instances = array_slice($this->instances, (int)$offset, null, true);
         }
     }
 
