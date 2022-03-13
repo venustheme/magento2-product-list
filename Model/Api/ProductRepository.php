@@ -104,7 +104,7 @@ class ProductRepository implements ProductRepositoryInterface
     public function getNewarrivalProducts(
         \Magento\Framework\Api\SearchCriteriaInterface $criteria
     ) {
-        return $this->getProductsBySource("new_arrival", $criteria);
+        return $this->getProductsBySource($criteria, "new_arrival");
     }
 
     /**
@@ -113,7 +113,7 @@ class ProductRepository implements ProductRepositoryInterface
     public function getLatestProducts(
         \Magento\Framework\Api\SearchCriteriaInterface $criteria
     ) {
-        return $this->getProductsBySource("latest", $criteria);
+        return $this->getProductsBySource($criteria, "latest");
     }
 
     /**
@@ -122,7 +122,7 @@ class ProductRepository implements ProductRepositoryInterface
     public function getSpecialProducts(
         \Magento\Framework\Api\SearchCriteriaInterface $criteria
     ) {
-        return $this->getProductsBySource("special", $criteria);
+        return $this->getProductsBySource($criteria, "special");
     }
 
     /**
@@ -131,7 +131,7 @@ class ProductRepository implements ProductRepositoryInterface
     public function getMostViewedProducts(
         \Magento\Framework\Api\SearchCriteriaInterface $criteria
     ) {
-        return $this->getProductsBySource("most_popular", $criteria);
+        return $this->getProductsBySource($criteria, "most_popular");
     }
 
     /**
@@ -140,7 +140,7 @@ class ProductRepository implements ProductRepositoryInterface
     public function getBestsellerProducts(
         \Magento\Framework\Api\SearchCriteriaInterface $criteria
     ) {
-        return $this->getProductsBySource("best_seller", $criteria);
+        return $this->getProductsBySource($criteria, "best_seller");
     }
 
     /**
@@ -149,7 +149,7 @@ class ProductRepository implements ProductRepositoryInterface
     public function getTopratedProducts(
         \Magento\Framework\Api\SearchCriteriaInterface $criteria
     ) {
-        return $this->getProductsBySource("top_rated", $criteria);
+        return $this->getProductsBySource($criteria, "top_rated");
     }
 
     /**
@@ -158,7 +158,7 @@ class ProductRepository implements ProductRepositoryInterface
     public function getRandomProducts(
         \Magento\Framework\Api\SearchCriteriaInterface $criteria
     ) {
-        return $this->getProductsBySource("random", $criteria);
+        return $this->getProductsBySource($criteria, "random");
     }
 
     /**
@@ -167,7 +167,7 @@ class ProductRepository implements ProductRepositoryInterface
     public function getFeaturedProducts(
         \Magento\Framework\Api\SearchCriteriaInterface $criteria
     ) {
-        return $this->getProductsBySource("featured", $criteria);
+        return $this->getProductsBySource($criteria, "featured");
     }
 
     /**
@@ -176,15 +176,15 @@ class ProductRepository implements ProductRepositoryInterface
     public function getDealsProducts(
         \Magento\Framework\Api\SearchCriteriaInterface $criteria
     ) {
-        return $this->getProductsBySource("deals", $criteria);
+        return $this->getProductsBySource($criteria, "deals");
     }
 
      /**
      * {@inheritdoc}
      */
     public function getProductsBySource(
-        $source_key = "latest",
-        \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
+        \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria,
+        $source_key = "latest"
     ) {
         $product = $this->productFactory->create();
         $config = [];
