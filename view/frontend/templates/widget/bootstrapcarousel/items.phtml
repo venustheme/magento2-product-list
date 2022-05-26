@@ -160,7 +160,7 @@ $x = 0;
 							$specialPriceToDate = $_product->getSpecialToDate();
 							$today =  time();
 							if ($specialprice) {
-								if($today >= strtotime( $specialPriceFromDate) && $today <= strtotime($specialPriceToDate) || $today >= strtotime( $specialPriceFromDate) && is_null($specialPriceToDate)) {
+								if($today >= @strtotime( $specialPriceFromDate) && $today <= @strtotime($specialPriceToDate) || $today >= @strtotime( $specialPriceFromDate) && is_null($specialPriceToDate)) {
 									?>
 									<span class="onsale"><?php echo __("Sale");?></span>
 									<?php
@@ -200,7 +200,7 @@ $x = 0;
 					<?php } ?>
 					<?php } ?>
 					<?php } ?>
-					
+
 
 					<?php if($show_wishlist || $show_compare || $show_addtocart){ ?>
 					<div class="product-item-actions">
@@ -287,16 +287,16 @@ $x = 0;
 
 			<?php // Countdown Timer Block ?>
 			<?php if( isset($_product) && $_product->getFinalPrice() < $_product->getPrice() && $show_countdowntimer && $_product->getSpecialToDate()!=''){
-				$date1 = date('G:i:s', strtotime($_product->getSpecialToDate()));
+				$date1 = date('G:i:s', @strtotime($_product->getSpecialToDate()));
 				if ($date1 == "0:00:00") {
-					$targetDate = date('m/d/Y \2\3\:\5\9\:\0\0', strtotime($_product->getSpecialToDate()));
+					$targetDate = date('m/d/Y \2\3\:\5\9\:\0\0', @strtotime($_product->getSpecialToDate()));
 				}else{
-					$targetDate = date('m/d/Y G:i:s', strtotime($_product->getSpecialToDate()));
+					$targetDate = date('m/d/Y G:i:s', @strtotime($_product->getSpecialToDate()));
 				}
 				?>
 				<div class="countdown-timmer">
 					<div class="item-detail">
-						<div class="timer-explain">(<?php echo date('m/d/Y', strtotime($_product->getSpecialToDate())); ?>)</div>
+						<div class="timer-explain">(<?php echo date('m/d/Y', @strtotime($_product->getSpecialToDate())); ?>)</div>
 					</div>
 					<div id="item-countdown-<?php echo $productId ?>" class="item-countdown"></div>
 					<script type="text/javascript">

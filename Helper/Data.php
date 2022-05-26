@@ -1,18 +1,18 @@
 <?php
 /**
  * Venustheme
- * 
+ *
  * NOTICE OF LICENSE
- * 
+ *
  * This source file is subject to the Venustheme.com license that is
  * available through the world-wide-web at this URL:
  * http://www.venustheme.com/license-agreement.html
- * 
+ *
  * DISCLAIMER
- * 
+ *
  * Do not edit or add to this file if you wish to upgrade this extension to newer
  * version in the future.
- * 
+ *
  * @category   Venustheme
  * @package    Ves_Productlist
  * @copyright  Copyright (c) 2014 Venustheme (http://www.venustheme.com/)
@@ -58,26 +58,26 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 		$to_date = $_product->getNewsToDate();
 		$is_new = false;
 		$is_new = $this->isNewProduct($from_date, $to_date);
-		$today = strtotime("now");
+		$today = @strtotime("now");
 
 		if(!($from_date && $to_date)){
 			return false;
 		}
 
 		if ($from_date && $to_date) {
-			$from_date = strtotime($from_date);
-			$to_date = strtotime($to_date);
+			$from_date = @strtotime($from_date);
+			$to_date = @strtotime($to_date);
 			if ($from_date <= $today && $to_date >= $today) {
 				$is_new = true;
 			}
 		}
 		elseif ($from_date && !$to_date) {
-			$from_date = strtotime($from_date);
+			$from_date = @strtotime($from_date);
 			if ($from_date <= $today) {
 				$is_new = true;
 			}
 		}elseif (!$from_date && $to_date) {
-			$to_date = strtotime($to_date);
+			$to_date = @strtotime($to_date);
 			if ($to_date >= $today) {
 				$is_new = true;
 			}
@@ -88,8 +88,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 	public function isNewProduct( $created_date, $num_days_new = 3) {
 		$check = false;
 
-		$startTimeStamp = strtotime($created_date);
-		$endTimeStamp = strtotime("now");
+		$startTimeStamp = @strtotime($created_date);
+		$endTimeStamp = @strtotime("now");
 
 		$timeDiff = abs($endTimeStamp - $startTimeStamp);
         $numberDays = $timeDiff/86400;// 86400 seconds in one day
